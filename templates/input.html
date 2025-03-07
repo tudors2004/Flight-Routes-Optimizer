@@ -5,10 +5,17 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Input Page</title>
-    <link rel="stylesheet" href="index.css">
+    <title>Flight Route Optimizer App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='input.css') }}">
 </head>
 <body>
-
+    <h1>Flight Route Optimizer</h1>
+    <form action="/calculate" method="post">
+        <button type="submit">Submit</button>
+    </form>
+    <script type="text/javascript">
+        src="{{ url_for('static', filename='input.js') }}"
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>
 </html>
