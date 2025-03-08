@@ -15,4 +15,4 @@ for header,table in zip(h,t):
     df["Country"] = country
     airports.append(df)
 df_airports = pd.concat(airports, ignore_index=True) # concatenate all the df
-df_airports.to_csv("static/csvfiles/airports.csv", index=False)
+df_airports.to_csv("static/airports.csv", index=False)

@@ -1,0 +1,3 @@
+# Flight Route Optimizer
+### Overview
+The Flight Route Optimizer is a web application designed to help users find the most efficient flight routes between two airports. It uses algorithms like Dijkstra and A* to calculate optimal routes based on user-defined parameters such as departure, destination, and aircraft type. The application is built using Flask for the backend, PostgreSQL for storing airport data, Pandas for web scraping and data processing, and JavaScript and HTML/CSS for the frontend.

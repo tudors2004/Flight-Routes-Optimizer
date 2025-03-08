@@ -1,5 +1,3 @@
-h1{
-    color: #790000;
-    font-size: 2em;
-    text-align: center;
+body{
+    background:linear-gradient(90deg, rgb(187, 245, 255), #ffffff,#ffffff, #bbf5ff);
 }
