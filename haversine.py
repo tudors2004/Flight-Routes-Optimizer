@@ -1,6 +1,9 @@
 import math
 import json
 
+# The routes are 6 or 7 years old so there might be missing routes between airports,
+# and for some airports there might be random routes that do not exist at all
+
 def haversine(lat1, lon1, lat2, lon2):
     R = 6371 # the earths radius in km
     phi1, phi2 = math.radians(lat1), math.radians(lat2)

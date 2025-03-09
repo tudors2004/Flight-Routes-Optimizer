@@ -9,13 +9,27 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='output.css') }}">
 </head>
 <body>
-    <h2>Optimal Flight Route</h2>
+    <h2>✈️Optimal Flight Route✈️</h2>
+
     <p><strong>Departure:</strong> {{ departure }}</p>
     <p><strong>Destination:</strong> {{ destination }}</p>
     <p><strong>Selected Aircraft:</strong> {{ aircraft }}</p>
     <p><strong>Algorithm Used:</strong> {{ algorithm }}</p>
+    <hr>
+    {% if path %}
+        <h3>Route Found:</h3>
+        <ul>
+            {% for airport in path %}
+                <li>{{ airport }}</li>
+            {% endfor %}
+        </ul>
+        <p><strong>Shortest Distance:</strong> {{ cost }} km({{ cost_miles }} mi)</p>
+    {% else %}
+        <h3>No route found between {{ departure }} and {{ destination }}! 😔 </h3>
+    {% endif %}
+
     <br><br>
-    <a href="/">Try another route</a>
+    <a href="/">Try another route😏</a>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
     <script src="{{ url_for('static', filename='output.js') }}"></script>
