@@ -2,8 +2,10 @@ import math
 import json
 
 # The routes are 6 or 7 years old so there might be missing routes between airports,
-# and for some airports there might be random routes that do not exist at all
+# and for some smaller airports there might be random routes that do not exist at all
+# but in general the routes are correct
 
+# The haversine formula is used to calculate the distance between two points on the surface of a sphere
 def haversine(lat1, lon1, lat2, lon2):
     R = 6371 # the earths radius in km
     phi1, phi2 = math.radians(lat1), math.radians(lat2)
@@ -17,7 +19,7 @@ def haversine(lat1, lon1, lat2, lon2):
     return R * c  # distance in km
 
 
-
+# This script helps to create the graph.json file
 
 coordinates = {}
 with open("static/coordinates.txt", "r") as f:
@@ -27,7 +29,6 @@ with open("static/coordinates.txt", "r") as f:
         lat = float(parts[1])
         lon = float(parts[2])
         coordinates[iata] = (lat, lon)
-
 
 
 graph = {}
@@ -50,8 +51,5 @@ with open("static/routes.txt", "r") as f:
             print(f" missing coord for {src} or {dst}")
 
 
-
-
 with open("static/graph.json", "w") as f:
     json.dump(graph, f, indent=4)
-

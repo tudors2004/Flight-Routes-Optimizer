@@ -28,6 +28,19 @@
         <h3>No route found between {{ departure }} and {{ destination }}! 😔 </h3>
     {% endif %}
 
+    <h3>Weather Info:</h3>
+        <ul>
+            <li><strong>At Departure ({{ departure }}):</strong> {{ departure_weather }}</li>
+            <li><strong>At Destination ({{ destination }}):</strong> {{ destination_weather }}</li>
+        </ul>
+
+    <h3>Weather Along the Route:</h3>
+        <ul>
+            {% for step in weather_along_route %}
+                <li><strong>{{ step.airport }}:</strong> {{ step.weather }}</li>
+            {% endfor %}
+        </ul>
+
     <br><br>
     <a href="/">Try another route😏</a>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

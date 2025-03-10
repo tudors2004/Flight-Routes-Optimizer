@@ -3,9 +3,13 @@ from database import get_db_connection, return_db_connection
 from flask_cors import CORS
 from algorithms import astar, dijkstra
 import json
+from weather import get_weather
+import os
+from dotenv import load_dotenv
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'cheie..'
+load_dotenv()
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 CORS(app)
 
 @app.route('/')
@@ -42,10 +46,26 @@ def calculate():
 
     cost_miles = cost * 0.621371 if cost else None
 
+    iata_to_icao = {}
+    all_airports = [departure, destination] + path
+    weather_data = get_weather(all_airports, iata_to_icao)
+    departure_weather = weather_data.get(iata_to_icao.get(departure), "No weather data available")
+    destination_weather = weather_data.get(iata_to_icao.get(destination), "No weather data available")
+    weather_along_route = []
+    for airport in path:
+        icao_code = iata_to_icao.get(airport)
+        weather_along_route.append({
+            'airport': airport,
+            'weather': weather_data.get(icao_code, "No weather data available")
+        })
+
     return render_template('output.html',
                            departure=departure, destination=destination, aircraft=aircraft, algorithm=algorithm,
                            path=path, cost=round(cost, 2) if cost else "No path found",
-                           cost_miles=round(cost_miles, 2) if cost_miles else "No path found")
+                           cost_miles=round(cost_miles, 2) if cost_miles else "No path found",
+                           departure_weather=departure_weather['raw_metar'],
+                           destination_weather=destination_weather['raw_metar'],
+                           weather_along_route=weather_along_route)
 
 @app.route('/airports', methods=['GET'])
 def airports():
