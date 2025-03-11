@@ -17,44 +17,132 @@
     <p><strong>Algorithm Used:</strong> {{ algorithm }}</p>
     <hr>
     {% if path %}
-        <p><strong>Shortest Distance:</strong> {{ cost }} km({{ cost_miles }} mi)</p>
+        <p><strong><sup>*</sup>Shortest Distance:</strong> {{ cost }} km({{ cost_miles }} mi) </p>
+        <p><strong>{% for airport in path %}{{ airport }}{% if not loop.last %} -> {% endif %}{% endfor %}</strong></p>
     {% else %}
         <h3>No route found between {{ departure }} and {{ destination }}! 😔 </h3>
     {% endif %}
 
     <hr>
+    <h3>Flight Economics</h3>
+
+    {% if cost %}
+        {% set price_per_km = 0.3 %}
+        {% set fuel_per_km = 2.5 %}
+
+        {% set cost_per_person = cost * price_per_km %}
+        {% set consumption = cost * fuel_per_km %}
+        {% set co2_emissions = consumption * 3.16 %}
+
+        <ul>
+            <li><strong><sup>*</sup>Cost per Person:</strong> {{ cost_per_person | round(2) }} €</li>
+            <li><strong><sup>*</sup>Total Fuel Consumption:</strong> {{ consumption | round(2) }} L</li>
+            <li><strong><sup>*</sup>CO2 Emissions:</strong> {{ co2_emissions | round(2) }} kg</li>
+        </ul>
+    {% else %}
+        <p>No flight data available to calculate economics.</p>
+    {% endif %}
 
     {% if weather_along_route %}
-        <h3>⛅ Weather At The Departure And Destination Airport ⛅</h3>
+        <h3>Weather</h3>
         <ul>
             {% for step in weather_along_route %}
                 <li>
-                    <h4>{{ step.airport }} ({{ step.icao }})</h4>
+                    <h4> Weather at {{ step.airport_name }} ({{ step.airport }}), {{ step.city }}, {{ step.country }}</h4>
 
                     {% if step.weather %}
                         <p><strong>Time:</strong> {{ step.weather.metar_decoded.Time }}</p>
-                        <p><strong>Temperature:</strong> {{ step.weather.metar_decoded.TD.temp }}°C</p>
-                        <p><strong>Dew Point:</strong> {{ step.weather.metar_decoded.TD.dewpoint }}°C</p>
-                        <p><strong>Wind:</strong> {{ step.weather.metar_decoded.Wind.direction }}° at {{ step.weather.metar_decoded.Wind.strength }} {{ step.weather.metar_decoded.Wind.unit }}</p>
+                        <p><strong>Temperature:</strong> {{ step.weather.metar_decoded.TD.temp }}°C
+                            {% if step.weather.metar_decoded.TD.temp < -10 %}
+                                <span class="icy">(Icy conditions)</span>
+                            {% elif step.weather.metar_decoded.TD.temp < 0 %}
+                                <span class="cold">(Cold)</span>
+                            {% elif step.weather.metar_decoded.TD.temp < 20 %}
+                                <span class="comfortable">(Comfortable)</span>
+                            {% elif step.weather.metar_decoded.TD.temp < 35 %}
+                                <span class="warm">(Warm)</span>
+                            {% else %}
+                                <span class="heat">(Heat warning!)</span>
+                            {% endif %}
+                        </p>
+
+                        <p><strong>Dew Point:</strong> {{ step.weather.metar_decoded.TD.dewpoint }}°C
+                            {% if step.weather.metar_decoded.TD.dewpoint < 0 %}
+                                <span class="dry">(Dry air)</span>
+                            {% elif step.weather.metar_decoded.TD.dewpoint < 10 %}
+                                <span class="normal">(Normal)</span>
+                            {% elif step.weather.metar_decoded.TD.dewpoint < 20 %}
+                                <span class="humid">(Humid)</span>
+                            {% else %}
+                                <span class="very humid">(Very humid)</span>
+                            {% endif %}
+                        </p>
+
+                        <p><strong>Wind:</strong> {{ step.weather.metar_decoded.Wind.direction }}° at {{ step.weather.metar_decoded.Wind.strength }} {{ step.weather.metar_decoded.Wind.unit }}
+                            {% if step.weather.metar_decoded.Wind.strength <= 5 %}
+                                <span class="calm">(Calm)</span>
+                            {% elif step.weather.metar_decoded.Wind.strength <= 15 %}
+                                <span class="light">(Light breeze)</span>
+                            {% elif step.weather.metar_decoded.Wind.strength <= 25 %}
+                                <span class="moderate">(Moderate wind)</span>
+                            {% else %}
+                                <span class="strong">(Strong wind!)</span>
+                            {% endif %}
+
+                            {% if step.weather.metar_decoded.Wind.gust and step.weather.metar_decoded.Wind.gust > 0 %}
+                                <span class="gusts">Gusts up to {{ step.weather.metar_decoded.Wind.gust }} {{ step.weather.metar_decoded.Wind.unit }}</span>
+                            {% endif %}
+                        </p>
 
                         <p><strong>Visibility:</strong>
-                            {% for vis in step.weather.metar_decoded.Visibility %}
-                                {{ vis.value }}{{ vis.units }} ({{ vis.dir }}){% if not loop.last %}, {% endif %}
+                            {% set visibilities = step.weather.metar_decoded.Visibility %}
+                            {% for vis in visibilities %}
+                                {{ vis.value }}{{ vis.units }} ({{ vis.dir }})
+
+                                {% if vis.value == 9999 %}
+                                    <span class="excellent">(Excellent visibility (10km or more))</span>
+                                {% elif vis.value < 50 %}
+                                    <span class="dangerous">(Dangerous! Below 50m)</span>
+                                {% elif vis.value < 800 %}
+                                    <span class="low vis">(Low visibility)</span>
+                                {% elif vis.value < 5000 %}
+                                    <span class="moderate vis">(Moderate visibility)</span>
+                                {% else %}
+                                    <span class="good">(Good visibility)</span>
+                                {% endif %}
                             {% endfor %}
                         </p>
 
                         <p><strong>Clouds:</strong>
                             {% if step.weather.metar_decoded.Clouds %}
                                 {% for cloud in step.weather.metar_decoded.Clouds %}
-                                    {{ cloud.type }} {{ cloud.base }}{{ cloud.units }}{% if not loop.last %}, {% endif %}
+                                    {{ cloud.type }} {{ cloud.base }}{{ cloud.units }}
+
+                                    {% if cloud.type == 'VV' %}
+                                        <span class="vv">(Vertical visibility only)</span>
+                                    {% elif cloud.type == 'BKN' and cloud.base < 2000 %}
+                                        <span class="broken">(Broken clouds below 2000ft)</span>
+                                    {% elif cloud.type == 'OVC' and cloud.base < 5000 %}
+                                        <span class="overcast">(Overcast, potential IFR)</span>
+                                    {% else %}
+                                        <span class="vfr">(VFR conditions)</span>
+                                    {% endif %}
                                 {% endfor %}
                             {% else %}
                                 Clear skies
                             {% endif %}
                         </p>
 
-                        <p><strong>QNH(Pressure):</strong> {{ step.weather.metar_decoded.QNH.value }} {{ step.weather.metar_decoded.QNH.type }}</p>
 
+                        <p><strong>QNH (Pressure):</strong> {{ step.weather.metar_decoded.QNH.value }} {{ step.weather.metar_decoded.QNH.type }}
+                            {% if step.weather.metar_decoded.QNH.value < 1000 %}
+                                <span class="low pressure">(Low pressure - possible storms)</span>
+                            {% elif step.weather.metar_decoded.QNH.value <= 1020 %}
+                                <span class="normal pressure">(Normal pressure)</span>
+                            {% else %}
+                                <span class="high pressure">(High pressure - stable weather)</span>
+                            {% endif %}
+                        </p>
                     {% else %}
                         <p><em>No weather data available.</em></p>
                     {% endif %}
@@ -68,8 +156,9 @@
 
     <br><br>
     <a href="/">Try another route😏</a>
+    <p><sup>*</sup> The following information is provided as an estimation and may vary from factual data.</p>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
-    <script src="{{ url_for('static', filename='output.js') }}"></script>
+    <script src="{{ url_for('static', filename='index.js') }}"></script>
 </body>
 </html>
