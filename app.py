@@ -12,6 +12,16 @@ load_dotenv()
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 CORS(app)
 
+def load_mapping():
+    mapping = {}
+    with open('static/icao.txt', 'r', encoding='utf-8') as f:
+        for line in f:
+            parts = line.strip().split(',')
+            if len(parts) == 2:
+                iata = parts[0].strip().upper()
+                icao = parts[1].strip().upper()
+                mapping[iata] = icao
+    return mapping
 @app.route('/')
 def hello_world():
     return render_template('input.html')
@@ -46,25 +56,28 @@ def calculate():
 
     cost_miles = cost * 0.621371 if cost else None
 
-    iata_to_icao = {}
-    all_airports = [departure, destination] + path
-    weather_data = get_weather(all_airports, iata_to_icao)
-    departure_weather = weather_data.get(iata_to_icao.get(departure), "No weather data available")
-    destination_weather = weather_data.get(iata_to_icao.get(destination), "No weather data available")
+    iata_to_icao = load_mapping()
+    icao_codes = []
+    for iata in path:
+        icao = iata_to_icao.get(iata)
+        if icao:
+            icao_codes.append(icao)
+
+    weather_data = get_weather(icao_codes)
     weather_along_route = []
-    for airport in path:
-        icao_code = iata_to_icao.get(airport)
+    for iata in path:
+        icao = iata_to_icao.get(iata, "Unknown ICAO")
+        metars = weather_data.get(icao, ["No data available"])
         weather_along_route.append({
-            'airport': airport,
-            'weather': weather_data.get(icao_code, "No weather data available")
+            'airport': iata,
+            'icao': icao,
+            'weather': metars[0] if isinstance(metars, list) and metars else "No data available"
         })
 
     return render_template('output.html',
                            departure=departure, destination=destination, aircraft=aircraft, algorithm=algorithm,
                            path=path, cost=round(cost, 2) if cost else "No path found",
                            cost_miles=round(cost_miles, 2) if cost_miles else "No path found",
-                           departure_weather=departure_weather['raw_metar'],
-                           destination_weather=destination_weather['raw_metar'],
                            weather_along_route=weather_along_route)
 
 @app.route('/airports', methods=['GET'])

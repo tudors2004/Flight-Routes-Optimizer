@@ -17,29 +17,54 @@
     <p><strong>Algorithm Used:</strong> {{ algorithm }}</p>
     <hr>
     {% if path %}
-        <h3>Route Found:</h3>
-        <ul>
-            {% for airport in path %}
-                <li>{{ airport }}</li>
-            {% endfor %}
-        </ul>
         <p><strong>Shortest Distance:</strong> {{ cost }} km({{ cost_miles }} mi)</p>
     {% else %}
         <h3>No route found between {{ departure }} and {{ destination }}! 😔 </h3>
     {% endif %}
 
-    <h3>Weather Info:</h3>
-        <ul>
-            <li><strong>At Departure ({{ departure }}):</strong> {{ departure_weather }}</li>
-            <li><strong>At Destination ({{ destination }}):</strong> {{ destination_weather }}</li>
-        </ul>
+    <hr>
 
-    <h3>Weather Along the Route:</h3>
+    {% if weather_along_route %}
+        <h3>⛅ Weather At The Departure And Destination Airport ⛅</h3>
         <ul>
             {% for step in weather_along_route %}
-                <li><strong>{{ step.airport }}:</strong> {{ step.weather }}</li>
+                <li>
+                    <h4>{{ step.airport }} ({{ step.icao }})</h4>
+
+                    {% if step.weather %}
+                        <p><strong>Time:</strong> {{ step.weather.metar_decoded.Time }}</p>
+                        <p><strong>Temperature:</strong> {{ step.weather.metar_decoded.TD.temp }}°C</p>
+                        <p><strong>Dew Point:</strong> {{ step.weather.metar_decoded.TD.dewpoint }}°C</p>
+                        <p><strong>Wind:</strong> {{ step.weather.metar_decoded.Wind.direction }}° at {{ step.weather.metar_decoded.Wind.strength }} {{ step.weather.metar_decoded.Wind.unit }}</p>
+
+                        <p><strong>Visibility:</strong>
+                            {% for vis in step.weather.metar_decoded.Visibility %}
+                                {{ vis.value }}{{ vis.units }} ({{ vis.dir }}){% if not loop.last %}, {% endif %}
+                            {% endfor %}
+                        </p>
+
+                        <p><strong>Clouds:</strong>
+                            {% if step.weather.metar_decoded.Clouds %}
+                                {% for cloud in step.weather.metar_decoded.Clouds %}
+                                    {{ cloud.type }} {{ cloud.base }}{{ cloud.units }}{% if not loop.last %}, {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                Clear skies
+                            {% endif %}
+                        </p>
+
+                        <p><strong>QNH(Pressure):</strong> {{ step.weather.metar_decoded.QNH.value }} {{ step.weather.metar_decoded.QNH.type }}</p>
+
+                    {% else %}
+                        <p><em>No weather data available.</em></p>
+                    {% endif %}
+                </li>
+                <hr>
             {% endfor %}
         </ul>
+    {% else %}
+        <h3>No weather data available along this route.</h3>
+    {% endif %}
 
     <br><br>
     <a href="/">Try another route😏</a>
