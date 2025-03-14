@@ -1,3 +1,223 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 body{
-    background:linear-gradient(90deg, rgb(187, 245, 255), #ffffff,#ffffff, #bbf5ff);
+  background: linear-gradient(90deg, rgb(187, 245, 255), #ffffff, #ffffff, #bbf5ff);
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  font-family: sans-serif;
+}
+
+h1{
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  color: #2c3e50;
+}
+
+form{
+  background: linear-gradient(90deg, #ffffff, #bbf5ff, #ffffff);
+  padding: 60px 50px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  max-width: 1400px;
+  width: 100%;
+  flex-wrap: wrap;
+  margin: 0 auto;
+}
+
+label{
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #34495e;
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+input.form-control,
+select.form-control {
+  width: 100%;
+  padding: 12px 15px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+input.form-control:focus,
+select.form-control:focus {
+  border-color: #3498db;
+  outline: none;
+}
+
+input.form-control::placeholder,
+textarea.form-control::placeholder {
+  color: #999;
+  line-height: 1.2;
+}
+.select2-container--default .select2-selection--single .select2-selection__placeholder {
+  font-size: 12px;
+}
+
+.select2-container .select2-selection--single {
+  height: 60px;
+  padding: 0 20px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+  color: #333;
+  line-height: 1;
+  margin: 0;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+  padding-left: 10px;
+  font-size: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+button[type="submit"] {
+  display: block;
+  background-color: #3498db;
+  width: 300px;
+  height: 100px;
+  line-height: 100px;
+  margin: auto;
+  color: #fff;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 5px;
+  box-shadow: 0 0 20px 0 rgba(0,0,0,.3);
+  transition: all 0.25s cubic-bezier(0.310, -0.105, 0.430, 1.400);
+  font-family: "Bahnschrift", system-ui;
+}
+
+button[type="submit"] span,
+button[type="submit"] .icon {
+  display: block;
+  height: 100%;
+  text-align: center;
+  position: absolute;
+  top: 0;
+}
+
+button[type="submit"] span {
+  width: 105%;
+  line-height: inherit;
+  font-size: 22px;
+  text-transform: uppercase;
+  left: 0;
+  transition: all 0.25s cubic-bezier(0.310, -0.105, 0.430, 1.400);
+}
+
+button[type="submit"] span:after {
+  content: '';
+  background-color: #073f68;
+  width: 2px;
+  height: 70%;
+  position: absolute;
+  top: 15%;
+  right: -1px;
+}
+
+button[type="submit"] .icon {
+  width: 50%;
+  right: 0;
+  transition: all 0.25s cubic-bezier(0.310, -0.105, 0.430, 1.400);
+}
+
+button[type="submit"] .fa {
+  font-size: 30px;
+  vertical-align: middle;
+  transition: all 0.25s cubic-bezier(0.310, -0.105, 0.430, 1.400), height 0.25s ease;
+}
+
+button[type="submit"] .fa-remove {
+  height: 36px;
+}
+
+button[type="submit"] .fa-check {
+  display: none;
+}
+
+button[type="submit"].success span,
+button[type="submit"]:hover span {
+  left: -72%;
+  opacity: 0;
+}
+
+button[type="submit"].success .icon,
+button[type="submit"]:hover .icon {
+  width: 100%;
+}
+
+button[type="submit"].success .fa {
+  font-size: 45px;
+}
+
+button[type="submit"].success {
+  background-color: #0077ff;
+}
+
+button[type="submit"].success .fa-remove {
+  display: none;
+}
+
+button[type="submit"].success .fa-check {
+  display: inline-block;
+}
+
+button[type="submit"]:hover {
+  opacity: .9;
+}
+
+button[type="submit"]:hover .fa-remove {
+  height: 46px;
+}
+
+button[type="submit"]:active {
+  opacity: 1;
+}
+
+button[type="submit"].success .icon:before,
+button[type="submit"]:hover .icon:before {
+  content: "✈️";
+  font-size: 45px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+
+@media (max-width: 768px) {
+  form {
+    padding: 30px;
+  }
 }

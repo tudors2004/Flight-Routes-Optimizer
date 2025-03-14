@@ -11,7 +11,7 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet">
 </head>
 <body>
-    <h1>Flight Route Optimizer</h1>
+    <h1>✈️Flight Route Optimizer✈️</h1>
     <form action="/calculate" method="post" id="form">
         <label for="departure">Departure Airport:</label>
         <select id="departure" name="departure" class="form-control select2"><option></option></select>
@@ -229,7 +229,13 @@
             <option value="A*">A*</option>
         </select>
         <br><br>
-        <button type="submit">Find Optimal Route</button>
+        <button type="submit" class="button" role="button">
+            <span>Find Optimal Route</span>
+            <div class="icon">
+              <i class="fa fa-remove"></i>
+              <i class="fa fa-check"></i>
+            </div>
+        </button>
     </form>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>

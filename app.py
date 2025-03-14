@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, render_template, request, jsonify
 from database import get_db_connection, return_db_connection
 from flask_cors import CORS
 from algorithms import astar, dijkstra

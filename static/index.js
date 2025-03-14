@@ -56,3 +56,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
     });
 });
+
+
+
+$(document).ready(function() {
+  function removeSuccess() {
+    $('.button').removeClass('success');
+  }
+
+  $('.button').click(function() {
+    $(this).addClass('success');
+    setTimeout(removeSuccess, 3000); // Reset
+  });
+});
