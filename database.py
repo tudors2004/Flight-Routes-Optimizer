@@ -3,7 +3,7 @@ from psycopg2 import pool
 from config import DB_CONFIG
 
 try:
-    db_pool = psycopg2.pool.SimpleConnectionPool(1, 10, **DB_CONFIG)
+    db_pool = psycopg2.pool.SimpleConnectionPool(1, 10, **DB_CONFIG, sslmode='require')
     if db_pool:
         print("postgresql connection pool created successfully")
 except Exception as e:

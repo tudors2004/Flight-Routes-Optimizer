@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='input.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
 </head>
 <body>
     <h1>✈️Flight Route Optimizer✈️</h1>
@@ -237,6 +239,36 @@
             </div>
         </button>
     </form>
+    <div id="about-section">
+        <h3>About Flight Route Optimizer</h3>
+        <p>The Flight Route Optimizer is designed to help travelers, airlines, and aviation enthusiasts find the most efficient flight paths between commercial airports worldwide. Whether you're planning a trip, optimizing airline operations, or analyzing travel costs, this tool provides the shortest and most cost-effective routes using algorithms for finding the shortest path between two points in a graph.</p>
+        <p>By selecting your departure and destination airports, along with your aircraft type, the app calculates not only the best possible route but also provides insights into fuel consumption, CO₂ emissions, and cost per passenger. Additionally, it integrates real-time weather data to help users understand conditions at their departure, arrival, and connecting airports.</p>
+        <h4>Why use this app? </h4>
+        <p class="h4p">Efficiency – Quickly identify the most optimal flight route with minimal travel time.</p>
+        <p class="h4p">Cost Optimization – Get a detailed breakdown of costs per passenger based on fuel consumption and distance.</p>
+        <p class="h4p">Eco-Friendly – Monitor and reduce CO₂ emissions by choosing efficient routes and aircraft.</p>
+        <p class="h4p">Real-Time Insights – Stay informed with up-to-date weather conditions at every airport along the route.</p>
+        <p class="h4p">User-Friendly – Designed with simplicity in mind, allowing anyone to easily plan flights with just a few clicks.</p>
+        <p class="h4p">Whether you're a pilot, an airline operator, or just a frequent traveler looking for smarter ways to fly, Flight Route Optimizer gives you all the insights needed to make wise decisions!</p>
+    </div>
+    <div class="footer-basic">
+        <footer>
+            <div class="social">
+                <a href="https://www.instagram.com/tudor_s22/"><i class="icon ion-social-instagram"></i></a>
+                <a href="https://www.linkedin.com/in/tudorsarghiuta/"><i class="icon ion-social-linkedin"></i></a>
+                <a href="https://github.com/tudors2004"><i class="icon ion-social-github"></i></a>
+                <a href="https://www.facebook.com/ussobrodut/"><i class="icon ion-social-facebook"></i></a>
+            </div>
+            <ul class="list-inline">
+                <li class="list-inline-item"><a href="#">Home</a></li>
+                <li class="list-inline-item"><a href="#">Services</a></li>
+                <li class="list-inline-item"><a href="#">About</a></li>
+                <li class="list-inline-item"><a href="#">Privacy Policy</a></li>
+            </ul>
+        </footer>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
     <script src="{{ url_for('static', filename='index.js') }}"></script>
