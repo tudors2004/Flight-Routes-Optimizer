@@ -14,7 +14,7 @@ def test_home_page(client):
     assert b"<html" in response.data
 
 @patch('app.get_db_connection')
-@patch('database.return_db_connection')
+@patch('app.return_db_connection')
 def test_airports_endpoint(mock_return_db_conn, mock_get_db_conn, client):
     mock_conn = MagicMock()
     mock_cursor = MagicMock()
